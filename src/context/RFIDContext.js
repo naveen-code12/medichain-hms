@@ -9,17 +9,20 @@ export function RFIDProvider({ children }) {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    // Check if RFID hardware is connected via backend
     const checkRFID = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/rfid/status');
+        const res = await fetch('http://localhost:5000/api/rfid/status', {
+          signal: AbortSignal.timeout(2000)
+        });
         const data = await res.json();
         setRfidConnected(data.connected || false);
       } catch {
+        // Backend not running = RFID not connected — no error
         setRfidConnected(false);
       }
       setChecking(false);
     };
+
     checkRFID();
     const interval = setInterval(checkRFID, 5000);
     return () => clearInterval(interval);
@@ -30,16 +33,14 @@ export function RFIDProvider({ children }) {
     setScanLog(prev => [scan, ...prev.slice(0, 49)]);
   };
 
-  // Simulate scan (only for demo — blocked in strict mode)
-  const simulateScan = () => {
-    if (!rfidConnected) return false;
-    const uid = Math.random().toString(16).substr(2, 8).toUpperCase();
-    addScan({ uid, time: new Date().toLocaleTimeString(), type: 'Simulated' });
-    return uid;
-  };
-
   return (
-    <RFIDContext.Provider value={{ rfidConnected, lastScan, scanLog, addScan, simulateScan, checking }}>
+    <RFIDContext.Provider value={{
+      rfidConnected,
+      lastScan,
+      scanLog,
+      addScan,
+      checking
+    }}>
       {children}
     </RFIDContext.Provider>
   );
