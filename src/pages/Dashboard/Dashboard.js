@@ -25,6 +25,15 @@ const getCount = (key) => {
   } catch { return 0; }
 };
 
+const getAllKeys = () => {
+  const all = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    all[key] = localStorage.getItem(key);
+  }
+  return all;
+};
+
 const getRevenue = () => {
   try {
     const keys = ['medichain_billing', 'medichain_finance_billing'];
@@ -50,14 +59,25 @@ export default function Dashboard() {
   });
 
   const loadStats = () => {
-    setStats({
-      patients: getCount('medichain_patients'),
-      inpatients: getCount('medichain_inpatients'),
-      appointments: getCount('medichain_appointments'),
-      doctors: getCount('medichain_doctors') + getCount('medichain_doctors2'),
-      lab: getCount('medichain_lab') + getCount('medichain_laboratory'),
-      billing: getRevenue(),
-    });
+    // All possible keys check chestamu
+    let patients = 0, inpatients = 0, appointments = 0, doctors = 0, lab = 0;
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      try {
+        const val = JSON.parse(localStorage.getItem(key));
+        if (!Array.isArray(val)) continue;
+        const count = val.length;
+
+        if (key.includes('patient') && !key.includes('inpatient') && !key.includes('discharge')) patients += count;
+        else if (key.includes('inpatient')) inpatients += count;
+        else if (key.includes('appointment')) appointments += count;
+        else if (key.includes('doctor')) doctors += count;
+        else if (key.includes('lab') || key.includes('laboratory')) lab += count;
+      } catch {}
+    }
+
+    setStats({ patients, inpatients, appointments, doctors, lab, billing: getRevenue() });
   };
 
   useEffect(() => {
