@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"sample_id": "S001", "patient": "Ravi Kumar", "test": "Blood CBC", "collected_by": "Lab Tech Ravi", "time": "08:30", "status": "Sent to Lab"}, {"sample_id": "S002", "patient": "Anita Reddy", "test": "HbA1c", "collected_by": "Lab Tech Priya", "time": "09:00", "status": "Collected"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_phlebotomy'); return s ? JSON.parse(s) : [{"sample_id": "S001", "patient": "Ravi Kumar", "test": "Blood CBC", "collected_by": "Lab Tech Ravi", "time": "08:30", "status": "Sent to Lab"}, {"sample_id": "S002", "patient": "Anita Reddy", "test": "HbA1c", "collected_by": "Lab Tech Priya", "time": "09:00", "status": "Collected"}]; } catch { return [{"sample_id": "S001", "patient": "Ravi Kumar", "test": "Blood CBC", "collected_by": "Lab Tech Ravi", "time": "08:30", "status": "Sent to Lab"}, {"sample_id": "S002", "patient": "Anita Reddy", "test": "HbA1c", "collected_by": "Lab Tech Priya", "time": "09:00", "status": "Collected"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_phlebotomy', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({sample_id:'',patient:'',test:'',collected_by:'',time:'',status:''});

@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"test_id": "T001", "patient": "Ravi Kumar", "test_name": "Blood CBC", "doctor": "Dr. Sharma", "result": "Abnormal", "status": "Completed"}, {"test_id": "T002", "patient": "Anita Reddy", "test_name": "HbA1c", "doctor": "Dr. Reddy", "result": "Pending", "status": "Pending"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_laboratory'); return s ? JSON.parse(s) : [{"test_id": "T001", "patient": "Ravi Kumar", "test_name": "Blood CBC", "doctor": "Dr. Sharma", "result": "Abnormal", "status": "Completed"}, {"test_id": "T002", "patient": "Anita Reddy", "test_name": "HbA1c", "doctor": "Dr. Reddy", "result": "Pending", "status": "Pending"}]; } catch { return [{"test_id": "T001", "patient": "Ravi Kumar", "test_name": "Blood CBC", "doctor": "Dr. Sharma", "result": "Abnormal", "status": "Completed"}, {"test_id": "T002", "patient": "Anita Reddy", "test_name": "HbA1c", "doctor": "Dr. Reddy", "result": "Pending", "status": "Pending"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_laboratory', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({test_id:'',patient:'',test_name:'',doctor:'',result:'',status:''});

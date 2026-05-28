@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"patient": "Ravi Kumar", "ward": "ICU", "bed": "B01", "nurse": "Nurse Kavya", "task": "IV Drip Change", "time": "09:00", "status": "Pending"}, {"patient": "Anita Reddy", "ward": "General", "bed": "B03", "nurse": "Nurse Priya", "task": "Vitals Check", "time": "10:00", "status": "Done"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_nurse'); return s ? JSON.parse(s) : [{"patient": "Ravi Kumar", "ward": "ICU", "bed": "B01", "nurse": "Nurse Kavya", "task": "IV Drip Change", "time": "09:00", "status": "Pending"}, {"patient": "Anita Reddy", "ward": "General", "bed": "B03", "nurse": "Nurse Priya", "task": "Vitals Check", "time": "10:00", "status": "Done"}]; } catch { return [{"patient": "Ravi Kumar", "ward": "ICU", "bed": "B01", "nurse": "Nurse Kavya", "task": "IV Drip Change", "time": "09:00", "status": "Pending"}, {"patient": "Anita Reddy", "ward": "General", "bed": "B03", "nurse": "Nurse Priya", "task": "Vitals Check", "time": "10:00", "status": "Done"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_nurse', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({patient:'',ward:'',bed:'',nurse:'',task:'',time:'',status:''});

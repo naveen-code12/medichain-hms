@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import API from '../../utils/api';
+
 export default function Discharge() {
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({patientId:'',patientName:'',doctor:'',ward:'',diagnosis:'',billAmount:'',condition:'Stable'});
-  useEffect(() => { API.get('/discharge').then(r => setList(r.data.discharges||[])).catch(()=>{}) }, []);
+  
   const save = async () => {
     try { await API.post('/discharge', form); const r = await API.get('/discharge'); setList(r.data.discharges||[]); setShowModal(false); }
     catch(e) { alert('Error!') }

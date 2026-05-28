@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"feedback_id": "FB001", "patient": "Ravi Kumar", "department": "ICU", "rating": "5", "comments": "Excellent care", "date": "2026-05-27"}, {"feedback_id": "FB002", "patient": "Anita Reddy", "department": "General", "rating": "4", "comments": "Good service", "date": "2026-05-26"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_feedback'); return s ? JSON.parse(s) : [{"feedback_id": "FB001", "patient": "Ravi Kumar", "department": "ICU", "rating": "5", "comments": "Excellent care", "date": "2026-05-27"}, {"feedback_id": "FB002", "patient": "Anita Reddy", "department": "General", "rating": "4", "comments": "Good service", "date": "2026-05-26"}]; } catch { return [{"feedback_id": "FB001", "patient": "Ravi Kumar", "department": "ICU", "rating": "5", "comments": "Excellent care", "date": "2026-05-27"}, {"feedback_id": "FB002", "patient": "Anita Reddy", "department": "General", "rating": "4", "comments": "Good service", "date": "2026-05-26"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_feedback', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({feedback_id:'',patient:'',department:'',rating:'',comments:'',date:''});

@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"medicine_id": "M001", "name": "Paracetamol 500mg", "category": "Analgesic", "stock": "450", "price": "2.50", "expiry": "2027-06", "status": "Available"}, {"medicine_id": "M002", "name": "Amoxicillin 250mg", "category": "Antibiotic", "stock": "15", "price": "8.00", "expiry": "2026-12", "status": "Low Stock"}, {"medicine_id": "M003", "name": "Metformin 500mg", "category": "Antidiabetic", "stock": "0", "price": "3.00", "expiry": "2027-03", "status": "Out of Stock"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_medicine'); return s ? JSON.parse(s) : [{"medicine_id": "M001", "name": "Paracetamol 500mg", "category": "Analgesic", "stock": "450", "price": "2.50", "expiry": "2027-06", "status": "Available"}, {"medicine_id": "M002", "name": "Amoxicillin 250mg", "category": "Antibiotic", "stock": "15", "price": "8.00", "expiry": "2026-12", "status": "Low Stock"}, {"medicine_id": "M003", "name": "Metformin 500mg", "category": "Antidiabetic", "stock": "0", "price": "3.00", "expiry": "2027-03", "status": "Out of Stock"}]; } catch { return [{"medicine_id": "M001", "name": "Paracetamol 500mg", "category": "Analgesic", "stock": "450", "price": "2.50", "expiry": "2027-06", "status": "Available"}, {"medicine_id": "M002", "name": "Amoxicillin 250mg", "category": "Antibiotic", "stock": "15", "price": "8.00", "expiry": "2026-12", "status": "Low Stock"}, {"medicine_id": "M003", "name": "Metformin 500mg", "category": "Antidiabetic", "stock": "0", "price": "3.00", "expiry": "2027-03", "status": "Out of Stock"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_medicine', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({medicine_id:'',name:'',category:'',stock:'',price:'',expiry:'',status:''});

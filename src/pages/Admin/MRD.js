@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"mr_no": "MR001", "patient": "Ravi Kumar", "doctor": "Dr. Sharma", "admission": "2026-05-20", "discharge": "2026-05-27", "diagnosis": "Pneumonia", "record_status": "Filed"}, {"mr_no": "MR002", "patient": "Anita Reddy", "doctor": "Dr. Reddy", "admission": "2026-05-18", "discharge": "", "diagnosis": "Diabetes T2", "record_status": "Active"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_mrd'); return s ? JSON.parse(s) : [{"mr_no": "MR001", "patient": "Ravi Kumar", "doctor": "Dr. Sharma", "admission": "2026-05-20", "discharge": "2026-05-27", "diagnosis": "Pneumonia", "record_status": "Filed"}, {"mr_no": "MR002", "patient": "Anita Reddy", "doctor": "Dr. Reddy", "admission": "2026-05-18", "discharge": "", "diagnosis": "Diabetes T2", "record_status": "Active"}]; } catch { return [{"mr_no": "MR001", "patient": "Ravi Kumar", "doctor": "Dr. Sharma", "admission": "2026-05-20", "discharge": "2026-05-27", "diagnosis": "Pneumonia", "record_status": "Filed"}, {"mr_no": "MR002", "patient": "Anita Reddy", "doctor": "Dr. Reddy", "admission": "2026-05-18", "discharge": "", "diagnosis": "Diabetes T2", "record_status": "Active"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_mrd', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({mr_no:'',patient:'',doctor:'',admission:'',discharge:'',diagnosis:'',record_status:''});

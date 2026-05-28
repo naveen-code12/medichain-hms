@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"bill_id": "B001", "patient": "Ravi Kumar", "total": "45000", "paid": "20000", "balance": "25000", "status": "Partial"}, {"bill_id": "B002", "patient": "Anita Reddy", "total": "18500", "paid": "18500", "balance": "0", "status": "Paid"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_finance_billing'); return s ? JSON.parse(s) : [{"bill_id": "B001", "patient": "Ravi Kumar", "total": "45000", "paid": "20000", "balance": "25000", "status": "Partial"}, {"bill_id": "B002", "patient": "Anita Reddy", "total": "18500", "paid": "18500", "balance": "0", "status": "Paid"}]; } catch { return [{"bill_id": "B001", "patient": "Ravi Kumar", "total": "45000", "paid": "20000", "balance": "25000", "status": "Partial"}, {"bill_id": "B002", "patient": "Anita Reddy", "total": "18500", "paid": "18500", "balance": "0", "status": "Paid"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_finance_billing', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({bill_id:'',patient:'',total:'',paid:'',balance:'',status:''});

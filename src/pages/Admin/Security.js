@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"log_id": "LOG001", "user": "Admin", "action": "Login", "module": "Auth", "ip_address": "192.168.1.1", "timestamp": "09:15 AM", "result": "Success"}, {"log_id": "LOG002", "user": "Dr. Sharma", "action": "View Patient", "module": "Patients", "ip_address": "192.168.1.5", "timestamp": "09:20 AM", "result": "Success"}, {"log_id": "LOG003", "user": "Unknown", "action": "Login Attempt", "module": "Auth", "ip_address": "10.0.0.5", "timestamp": "09:25 AM", "result": "Failed"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_security'); return s ? JSON.parse(s) : [{"log_id": "LOG001", "user": "Admin", "action": "Login", "module": "Auth", "ip_address": "192.168.1.1", "timestamp": "09:15 AM", "result": "Success"}, {"log_id": "LOG002", "user": "Dr. Sharma", "action": "View Patient", "module": "Patients", "ip_address": "192.168.1.5", "timestamp": "09:20 AM", "result": "Success"}, {"log_id": "LOG003", "user": "Unknown", "action": "Login Attempt", "module": "Auth", "ip_address": "10.0.0.5", "timestamp": "09:25 AM", "result": "Failed"}]; } catch { return [{"log_id": "LOG001", "user": "Admin", "action": "Login", "module": "Auth", "ip_address": "192.168.1.1", "timestamp": "09:15 AM", "result": "Success"}, {"log_id": "LOG002", "user": "Dr. Sharma", "action": "View Patient", "module": "Patients", "ip_address": "192.168.1.5", "timestamp": "09:20 AM", "result": "Success"}, {"log_id": "LOG003", "user": "Unknown", "action": "Login Attempt", "module": "Auth", "ip_address": "10.0.0.5", "timestamp": "09:25 AM", "result": "Failed"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_security', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({log_id:'',user:'',action:'',module:'',ip_address:'',result:''});

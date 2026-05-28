@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"unit_id": "BB001", "blood_group": "O+", "units": "3", "donor": "Rahul Sharma", "collection_date": "2026-05-01", "expiry": "2026-06-30", "status": "Available"}, {"unit_id": "BB002", "blood_group": "AB-", "units": "1", "donor": "Priya K", "collection_date": "2026-05-10", "expiry": "2026-07-08", "status": "Reserved"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_bloodbank'); return s ? JSON.parse(s) : [{"unit_id": "BB001", "blood_group": "O+", "units": "3", "donor": "Rahul Sharma", "collection_date": "2026-05-01", "expiry": "2026-06-30", "status": "Available"}, {"unit_id": "BB002", "blood_group": "AB-", "units": "1", "donor": "Priya K", "collection_date": "2026-05-10", "expiry": "2026-07-08", "status": "Reserved"}]; } catch { return [{"unit_id": "BB001", "blood_group": "O+", "units": "3", "donor": "Rahul Sharma", "collection_date": "2026-05-01", "expiry": "2026-06-30", "status": "Available"}, {"unit_id": "BB002", "blood_group": "AB-", "units": "1", "donor": "Priya K", "collection_date": "2026-05-10", "expiry": "2026-07-08", "status": "Reserved"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_bloodbank', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({unit_id:'',blood_group:'',units:'',donor:'',collection_date:'',expiry:'',status:''});

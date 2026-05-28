@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"body_id": "MRT001", "name": "—", "age": "—", "date_of_death": "", "cause": "—", "tray_no": "T1", "status": "Occupied"}, {"body_id": "MRT002", "name": "—", "age": "—", "date_of_death": "", "cause": "—", "tray_no": "T2", "status": "Available"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_mortuary'); return s ? JSON.parse(s) : [{"body_id": "MRT001", "name": "—", "age": "—", "date_of_death": "", "cause": "—", "tray_no": "T1", "status": "Occupied"}, {"body_id": "MRT002", "name": "—", "age": "—", "date_of_death": "", "cause": "—", "tray_no": "T2", "status": "Available"}]; } catch { return [{"body_id": "MRT001", "name": "—", "age": "—", "date_of_death": "", "cause": "—", "tray_no": "T1", "status": "Occupied"}, {"body_id": "MRT002", "name": "—", "age": "—", "date_of_death": "", "cause": "—", "tray_no": "T2", "status": "Available"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_mortuary', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({body_id:'',name:'',age:'',date_of_death:'',cause:'',tray_no:'',status:''});

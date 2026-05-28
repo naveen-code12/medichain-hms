@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"vehicle_no": "KA-01-9999", "driver": "Ramu", "contact": "9876543210", "status": "Available", "location": "Main Gate", "last_service": "2026-04-15"}, {"vehicle_no": "KA-02-8888", "driver": "Shiva", "contact": "9876543211", "status": "On Call", "location": "Sector 4", "last_service": "2026-05-01"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_ambulance'); return s ? JSON.parse(s) : [{"vehicle_no": "KA-01-9999", "driver": "Ramu", "contact": "9876543210", "status": "Available", "location": "Main Gate", "last_service": "2026-04-15"}, {"vehicle_no": "KA-02-8888", "driver": "Shiva", "contact": "9876543211", "status": "On Call", "location": "Sector 4", "last_service": "2026-05-01"}]; } catch { return [{"vehicle_no": "KA-01-9999", "driver": "Ramu", "contact": "9876543210", "status": "Available", "location": "Main Gate", "last_service": "2026-04-15"}, {"vehicle_no": "KA-02-8888", "driver": "Shiva", "contact": "9876543211", "status": "On Call", "location": "Sector 4", "last_service": "2026-05-01"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_ambulance', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({vehicle_no:'',driver:'',contact:'',status:'',location:'',last_service:''});

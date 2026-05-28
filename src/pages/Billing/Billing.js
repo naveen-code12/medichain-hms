@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import API from '../../utils/api';
+
 export default function Billing() {
   const [bills, setBills] = useState([]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({billId:'',patientId:'',patientName:'',totalAmount:'',paidAmount:'',status:'Pending'});
-  useEffect(() => { API.get('/billing').then(r => setBills(r.data.bills||[])).catch(()=>{}) }, []);
+  
   const save = async () => {
     try { await API.post('/billing', form); const r = await API.get('/billing'); setBills(r.data.bills||[]); setShowModal(false); }
     catch(e) { alert('Error!') }

@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"item": "Bed Sheets", "ward": "ICU", "quantity_sent": "50", "quantity_received": "48", "date": "2026-05-27", "status": "Completed"}, {"item": "Pillow Covers", "ward": "General", "quantity_sent": "80", "quantity_received": "0", "date": "2026-05-27", "status": "Sent"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_linen'); return s ? JSON.parse(s) : [{"item": "Bed Sheets", "ward": "ICU", "quantity_sent": "50", "quantity_received": "48", "date": "2026-05-27", "status": "Completed"}, {"item": "Pillow Covers", "ward": "General", "quantity_sent": "80", "quantity_received": "0", "date": "2026-05-27", "status": "Sent"}]; } catch { return [{"item": "Bed Sheets", "ward": "ICU", "quantity_sent": "50", "quantity_received": "48", "date": "2026-05-27", "status": "Completed"}, {"item": "Pillow Covers", "ward": "General", "quantity_sent": "80", "quantity_received": "0", "date": "2026-05-27", "status": "Sent"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_linen', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({item:'',ward:'',quantity_sent:'',quantity_received:'',date:'',status:''});

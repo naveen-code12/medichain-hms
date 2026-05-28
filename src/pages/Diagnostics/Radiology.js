@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"scan_id": "R001", "patient": "Ravi Kumar", "scan_type": "Chest X-Ray", "doctor": "Dr. Sharma", "report": "Mild infiltrates", "status": "Reported"}, {"scan_id": "R002", "patient": "Sita Devi", "scan_type": "MRI Brain", "doctor": "Dr. Reddy", "report": "Pending", "status": "Pending"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_radiology'); return s ? JSON.parse(s) : [{"scan_id": "R001", "patient": "Ravi Kumar", "scan_type": "Chest X-Ray", "doctor": "Dr. Sharma", "report": "Mild infiltrates", "status": "Reported"}, {"scan_id": "R002", "patient": "Sita Devi", "scan_type": "MRI Brain", "doctor": "Dr. Reddy", "report": "Pending", "status": "Pending"}]; } catch { return [{"scan_id": "R001", "patient": "Ravi Kumar", "scan_type": "Chest X-Ray", "doctor": "Dr. Sharma", "report": "Mild infiltrates", "status": "Reported"}, {"scan_id": "R002", "patient": "Sita Devi", "scan_type": "MRI Brain", "doctor": "Dr. Reddy", "report": "Pending", "status": "Pending"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_radiology', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({scan_id:'',patient:'',scan_type:'',doctor:'',report:'',status:''});

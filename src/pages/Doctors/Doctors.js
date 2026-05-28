@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"doctor_id": "D001", "name": "Dr. Priya Sharma", "department": "Cardiology", "phone": "9876543210", "specialization": "Interventional Cardiology", "status": "Active"}, {"doctor_id": "D002", "name": "Dr. Arun Reddy", "department": "Neurology", "phone": "9876543211", "specialization": "Stroke Medicine", "status": "Active"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_doctors2'); return s ? JSON.parse(s) : [{"doctor_id": "D001", "name": "Dr. Priya Sharma", "department": "Cardiology", "phone": "9876543210", "specialization": "Interventional Cardiology", "status": "Active"}, {"doctor_id": "D002", "name": "Dr. Arun Reddy", "department": "Neurology", "phone": "9876543211", "specialization": "Stroke Medicine", "status": "Active"}]; } catch { return [{"doctor_id": "D001", "name": "Dr. Priya Sharma", "department": "Cardiology", "phone": "9876543210", "specialization": "Interventional Cardiology", "status": "Active"}, {"doctor_id": "D002", "name": "Dr. Arun Reddy", "department": "Neurology", "phone": "9876543211", "specialization": "Stroke Medicine", "status": "Active"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_doctors2', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({doctor_id:'',name:'',department:'',phone:'',specialization:'',status:''});

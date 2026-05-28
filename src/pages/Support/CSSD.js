@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"item": "Surgical Instruments Set", "department": "OT", "qty": "5", "sterilization_method": "Autoclave", "date": "2026-05-27", "status": "Sterilized"}, {"item": "Endoscopy Kit", "department": "Radiology", "qty": "2", "sterilization_method": "ETO", "date": "2026-05-27", "status": "Processing"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_cssd'); return s ? JSON.parse(s) : [{"item": "Surgical Instruments Set", "department": "OT", "qty": "5", "sterilization_method": "Autoclave", "date": "2026-05-27", "status": "Sterilized"}, {"item": "Endoscopy Kit", "department": "Radiology", "qty": "2", "sterilization_method": "ETO", "date": "2026-05-27", "status": "Processing"}]; } catch { return [{"item": "Surgical Instruments Set", "department": "OT", "qty": "5", "sterilization_method": "Autoclave", "date": "2026-05-27", "status": "Sterilized"}, {"item": "Endoscopy Kit", "department": "Radiology", "qty": "2", "sterilization_method": "ETO", "date": "2026-05-27", "status": "Processing"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_cssd', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({item:'',department:'',qty:'',sterilization_method:'',date:'',status:''});

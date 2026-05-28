@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import API from '../../utils/api';
+
 export default function Doctors() {
   const [doctors, setDoctors] = useState([]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({doctorId:'',name:'',department:'Cardiology',phone:'',email:'',experience:''});
-  useEffect(() => { API.get('/doctors').then(r => setDoctors(r.data.doctors||[])).catch(()=>{}) }, []);
+  
   const save = async () => {
     try { await API.post('/doctors', form); const r = await API.get('/doctors'); setDoctors(r.data.doctors||[]); setShowModal(false); }
     catch(e) { alert('Error!') }

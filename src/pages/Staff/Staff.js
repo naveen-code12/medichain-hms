@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import API from '../../utils/api'
+
 import toast from 'react-hot-toast'
 
 const SAMPLE_RFID = [

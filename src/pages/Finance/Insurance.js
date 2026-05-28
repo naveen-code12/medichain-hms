@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"claim_id": "CL001", "patient": "Ravi Kumar", "insurance_co": "Star Health", "policy_no": "SH-1234567", "amount": "40000", "status": "Submitted"}, {"claim_id": "CL002", "patient": "Anita Reddy", "insurance_co": "HDFC Ergo", "policy_no": "HE-9876543", "amount": "15000", "status": "Approved"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_insurance'); return s ? JSON.parse(s) : [{"claim_id": "CL001", "patient": "Ravi Kumar", "insurance_co": "Star Health", "policy_no": "SH-1234567", "amount": "40000", "status": "Submitted"}, {"claim_id": "CL002", "patient": "Anita Reddy", "insurance_co": "HDFC Ergo", "policy_no": "HE-9876543", "amount": "15000", "status": "Approved"}]; } catch { return [{"claim_id": "CL001", "patient": "Ravi Kumar", "insurance_co": "Star Health", "policy_no": "SH-1234567", "amount": "40000", "status": "Submitted"}, {"claim_id": "CL002", "patient": "Anita Reddy", "insurance_co": "HDFC Ergo", "policy_no": "HE-9876543", "amount": "15000", "status": "Approved"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_insurance', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({claim_id:'',patient:'',insurance_co:'',policy_no:'',amount:'',status:''});

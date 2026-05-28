@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"ot_no": "OT-1", "patient": "Ravi Kumar", "surgeon": "Dr. Sharma", "procedure": "Appendectomy", "date": "2026-05-27", "time": "09:00", "status": "Scheduled"}, {"ot_no": "OT-2", "patient": "Anita Reddy", "surgeon": "Dr. Kumar", "procedure": "C-Section", "date": "2026-05-27", "time": "11:00", "status": "In Progress"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_ot'); return s ? JSON.parse(s) : [{"ot_no": "OT-1", "patient": "Ravi Kumar", "surgeon": "Dr. Sharma", "procedure": "Appendectomy", "date": "2026-05-27", "time": "09:00", "status": "Scheduled"}, {"ot_no": "OT-2", "patient": "Anita Reddy", "surgeon": "Dr. Kumar", "procedure": "C-Section", "date": "2026-05-27", "time": "11:00", "status": "In Progress"}]; } catch { return [{"ot_no": "OT-1", "patient": "Ravi Kumar", "surgeon": "Dr. Sharma", "procedure": "Appendectomy", "date": "2026-05-27", "time": "09:00", "status": "Scheduled"}, {"ot_no": "OT-2", "patient": "Anita Reddy", "surgeon": "Dr. Kumar", "procedure": "C-Section", "date": "2026-05-27", "time": "11:00", "status": "In Progress"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_ot', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ot_no:'',patient:'',surgeon:'',procedure:'',date:'',time:'',status:''});

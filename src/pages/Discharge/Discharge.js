@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"patient_id": "P003", "name": "Suresh Babu", "doctor": "Dr. Kumar", "ward": "Surgical", "diagnosis": "Appendicitis", "bill": "22000", "condition": "Recovered"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_discharge2'); return s ? JSON.parse(s) : [{"patient_id": "P003", "name": "Suresh Babu", "doctor": "Dr. Kumar", "ward": "Surgical", "diagnosis": "Appendicitis", "bill": "22000", "condition": "Recovered"}]; } catch { return [{"patient_id": "P003", "name": "Suresh Babu", "doctor": "Dr. Kumar", "ward": "Surgical", "diagnosis": "Appendicitis", "bill": "22000", "condition": "Recovered"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_discharge2', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({patient_id:'',name:'',doctor:'',ward:'',diagnosis:'',bill:'',condition:''});

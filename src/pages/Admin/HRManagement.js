@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
-  const [records, setRecords] = useState([{"staff_id": "HR001", "name": "Dr. Priya Sharma", "role": "Doctor", "department": "Cardiology", "phone": "9876543210", "join_date": "2020-01-15", "status": "Active"}, {"staff_id": "HR002", "name": "Nurse Kavya", "role": "Nurse", "department": "ICU", "phone": "9876543211", "join_date": "2022-06-01", "status": "Active"}]);
+  const [records, setRecords] = useState(() => { try { const s = localStorage.getItem('medichain_hr'); return s ? JSON.parse(s) : [{"staff_id": "HR001", "name": "Dr. Priya Sharma", "role": "Doctor", "department": "Cardiology", "phone": "9876543210", "join_date": "2020-01-15", "status": "Active"}, {"staff_id": "HR002", "name": "Nurse Kavya", "role": "Nurse", "department": "ICU", "phone": "9876543211", "join_date": "2022-06-01", "status": "Active"}]; } catch { return [{"staff_id": "HR001", "name": "Dr. Priya Sharma", "role": "Doctor", "department": "Cardiology", "phone": "9876543210", "join_date": "2020-01-15", "status": "Active"}, {"staff_id": "HR002", "name": "Nurse Kavya", "role": "Nurse", "department": "ICU", "phone": "9876543211", "join_date": "2022-06-01", "status": "Active"}]; } });
+
+  useEffect(() => {
+    try { localStorage.setItem('medichain_hr', JSON.stringify(records)); } catch{}
+  }, [records]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({staff_id:'',name:'',role:'',department:'',phone:'',join_date:'',status:''});

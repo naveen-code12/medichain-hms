@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import API from '../../utils/api';
+
 export default function Lab() {
   const [tests, setTests] = useState([]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({testId:'',patientId:'',patientName:'',testName:'Blood CBC',doctor:''});
-  useEffect(() => { API.get('/lab').then(r => setTests(r.data.tests||[])).catch(()=>{}) }, []);
+  
   const save = async () => {
     try { await API.post('/lab', form); const r = await API.get('/lab'); setTests(r.data.tests||[]); setShowModal(false); }
     catch(e) { alert('Error!') }
