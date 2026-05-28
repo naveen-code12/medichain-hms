@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/medichain-hms/static/css/main.836e8159.css",
-    "main.js": "/medichain-hms/static/js/main.5d0cec6b.js",
+    "main.js": "/medichain-hms/static/js/main.407c91e5.js",
     "static/js/453.54a3c937.chunk.js": "/medichain-hms/static/js/453.54a3c937.chunk.js",
     "index.html": "/medichain-hms/index.html",
     "main.836e8159.css.map": "/medichain-hms/static/css/main.836e8159.css.map",
-    "main.5d0cec6b.js.map": "/medichain-hms/static/js/main.5d0cec6b.js.map",
+    "main.407c91e5.js.map": "/medichain-hms/static/js/main.407c91e5.js.map",
     "453.54a3c937.chunk.js.map": "/medichain-hms/static/js/453.54a3c937.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.836e8159.css",
-    "static/js/main.5d0cec6b.js"
+    "static/js/main.407c91e5.js"
   ]
 }
