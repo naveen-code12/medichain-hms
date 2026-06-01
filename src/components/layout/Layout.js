@@ -2,7 +2,6 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useRFID } from '../../context/RFIDContext';
 import './Layout.css';
-import Chatbot from '../Chatbot/Chatbot';
 
 const nav = [
   { to: '/', icon: '📊', label: 'MIS Dashboard', end: true },
@@ -179,8 +178,6 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
-
-      <Chatbot />
     </div>
   );
 }
