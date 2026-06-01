@@ -30,6 +30,7 @@ import MISReports from './pages/Admin/MISReports';
 import Security from './pages/Admin/Security';
 import SystemControl from './pages/Admin/SystemControl';
 import RFIDModule from './pages/RFID/RFIDModule';
+import ChatbotPage from './pages/Chatbot/ChatbotPage';
 
 const PrivateRoute = ({ children }) => localStorage.getItem('token') ? children : <Navigate to="/login" />;
 
@@ -68,6 +69,7 @@ export default function App() {
             <Route path="security" element={<Security />} />
             <Route path="system" element={<SystemControl />} />
             <Route path="rfid" element={<RFIDModule />} />
+	    <Route path="chatbot" element={<ChatbotPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

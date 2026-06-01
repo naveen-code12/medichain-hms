@@ -37,6 +37,7 @@ const nav = [
   { to: '/reports', icon: '📈', label: 'MIS Reports' },
   { to: '/security', icon: '🔒', label: 'Security & Audit' },
   { to: '/system', icon: '⚙️', label: 'System Control' },
+  { to:'/chatbot', icon:'🤖', label:'AI Assistant' },
 ];
 
 export default function Layout() {
