@@ -99,7 +99,7 @@ export default function ChatbotPage() {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer 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'
+    'Authorization': `Bearer ${process.env.REACT_APP_GROQ_KEY}`
   },
   body: JSON.stringify({
     model: 'llama3-8b-8192',
