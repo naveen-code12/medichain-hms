@@ -95,19 +95,24 @@ export default function ChatbotPage() {
     const newHistory = [...history, { role: 'user', content: q }];
 
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: SYSTEM,
-          messages: newHistory,
-        }),
-      });
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer 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'
+  },
+  body: JSON.stringify({
+    model: 'llama3-8b-8192',
+    messages: [
+      { role: 'system', content: SYSTEM },
+      ...newHistory
+    ],
+    max_tokens: 1000
+  })
+});
 
-      const data = await res.json();
-      const reply = data.content?.[0]?.text || 'Maafi karo, oka chinna error vachindi. Malli try cheyyandi!';
+const data = await res.json();
+const reply = data.choices?.[0]?.message?.content || 'Error occurred. Please try again.';
 
       setHistory([...newHistory, { role: 'assistant', content: reply }]);
       setIsTyping(false);
